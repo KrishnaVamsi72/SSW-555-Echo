@@ -64,3 +64,41 @@ body{
     transform: translateY(-40%);
     font-size: 24px;
 }
+
+.wrapper .Remember-forgot{
+    display: flex;
+    justify-content: space-between;
+    font-size: 15px;
+    margin: -15px 0 15px;
+}
+
+.Remember-forgot label input{
+    accent-color: #fff;
+    margin-right: 3px;
+}
+
+.Remember-forgot a{
+    color: #fff;
+    text-decoration: none;
+}
+
+.Remember-forgot a:hover{
+    text-decoration: none;
+}
+
+.wrapper .btn{
+    width: 100%;
+    height: 45px;
+    background: #fff;
+    border: none;
+    outline: none;
+    border: 2px solid rgba(255, 255, 255, .2);
+    border-radius: 50px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    font-weight: 600;
+    /* padding 20px 45px 20px 20px */
+}
+
