@@ -14,3 +14,15 @@ body{
     background-size: cover;
     background-position: center;
 }
+
+.wrapper{
+    width: 420px;
+    background-color: transparent;
+    border: 2px solid rgba(255, 255, 255, .2);
+    backdrop-filter: blur(30px);
+    box-shadow: 0 0 10px rgba(255, 255, 255, .1);
+    color: azure;
+    border-radius: 10px;
+    padding: 30px 40px;
+}
+
