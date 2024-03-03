@@ -3,40 +3,101 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewpoint" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
 
 <body>
     <div class="wrapper">
-        <form action="">
-            <h1> Login </h1>
-            <div class="imput-box">
-                <input type="text" placeholder="Username" required>
+        <!-- Login Form -->
+        <form id="loginForm" action="#">
+            <h1>Login</h1>
+            <div class="input-box">
+                <input id="username" type="text" placeholder="Username" required>
+                <i class='bx bx-user'></i>
             </div>
 
             <div class="input-box">
-                <input type="password" placeholder="password" required>
+                <input id="password" type="password" placeholder="Password" required>
+                <i class='bx bx-lock'></i>
             </div>
 
-            <div class="Remember-forget">
-                <label> <input type="Checkbox"> Remember Me</label>
-                < a href="#"> Forgot Password?</a>
+            <div class="Remember-forgot">
+                <label><input type="checkbox"> Remember Me</label>
+                <a href="#" class="forgot-password">Forgot Password?</a>
             </div>
 
-            <button type="Submit" class="btn">Login</button>
+            <button type="submit" class="btn">Login</button>
 
             <div class="register-link">
                 <p>
-                    Dont have a account?
-                    <a href="Http://">Register</a>
+                    Don't have an account? <a href="#" class="register-link-btn">Register</a>
+                </p>
+            </div>
+        </form>
+
+        <!-- Register Form (Initially Hidden) -->
+        <form id="registerForm" action="#" style="display: none;">
+            <h1>Register</h1>
+            <div class="input-box">
+                <input id="registerUsername" type="text" placeholder="Username" required>
+                <i class='bx bx-user'></i>
+            </div>
+
+            <div class="input-box">
+                <input id="registerEmail" type="email" placeholder="Email" required>
+                <i class='bx bx-envelope'></i>
+            </div>
+
+            <div class="input-box">
+                <input id="registerPassword" type="password" placeholder="Password" required>
+                <i class='bx bx-lock'></i>
+            </div>
+
+            <button type="submit" class="btn">Register</button>
+
+            <div class="register-link">
+                <p>
+                    Already have an account? <a href="#" class="login-link-btn">Login</a>
                 </p>
             </div>
         </form>
     </div>
+
+    <script>
+        function toggleForms() {
+            document.getElementById("loginForm").style.display = "none";
+            document.getElementById("registerForm").style.display = "block";
+        }
+
+        // Function to validate the register form
+        function validateRegisterForm() {
+            var username = document.getElementById("registerUsername").value;
+            var email = document.getElementById("registerEmail").value;
+            var password = document.getElementById("registerPassword").value;
+
+            return true; 
+        }
+        document.querySelector(".register-link-btn").addEventListener("click", function(event) {
+            event.preventDefault();
+            toggleForms();
+        });
+
+        document.getElementById("registerForm").addEventListener("submit", function(event) {
+            if (!validateRegisterForm()) {
+                event.preventDefault();
+            }
+        });
+
+       
+        document.querySelector(".login-link-btn").addEventListener("click", function(event) {
+            event.preventDefault();
+            document.getElementById("registerForm").style.display = "none";
+            document.getElementById("loginForm").style.display = "block";
+        });
+    </script>
 </body>
 
 </html>
