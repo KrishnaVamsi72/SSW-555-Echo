@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewpoint" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
@@ -12,35 +12,55 @@
 
 <body>
     <div class="wrapper">
-        <form action="">
-            <h1> Login </h1>
-            <div class="imput-box">
-                <input type="text" placeholder="Username" required>
+        <form action="" onsubmit="return validateForm()">
+            <h1>Login</h1>
+            <div class="input-box">
+                <input type="text" id="email" placeholder="Email" required>
             </div>
-
-            <div id="email_error"> Please fill your email or phone</div>
 
             <div class="input-box">
-                <input type="password" placeholder="password" required>
+                <input type="password" placeholder="Password" id="password" required >
             </div>
-
-            <div id="pass_error"> Please fill up your password</div>
 
             <div class="Remember-forget">
-                <label> <input type="Checkbox"> Remember Me</label>
-                <a href="#"> Forgot Password?</a>
+                <label><input type="checkbox"> Remember Me</label>
+                <a href="http://forgotpass.html"> Forgot Password?</a>
             </div>
 
-            <button type="Submit" class="btn">Login</button>
+            <button type="submit" class="btn">Login</button>
 
             <div class="register-link">
                 <p>
-                    Dont have a account?
-                    <a href="Http://">Register</a>
+                    Don't have an account?
+                    <a href="http://">Register</a>
                 </p>
             </div>
         </form>
     </div>
+
+    <script>
+        function validateForm() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (!validateEmail(email)) {
+                alert('Invalid email format');
+                return false;
+            }
+
+            if (password.length < 8) {
+                alert('Password must be at least 8 characters long');
+                return false;
+            }
+
+            return true;
+        }
+
+        function validateEmail(email) {
+            const re = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
+            return re.test(email);
+        }
+    </script>
 </body>
 
 </html>
