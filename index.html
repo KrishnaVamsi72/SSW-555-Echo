@@ -16,17 +16,15 @@
             <h1>Login</h1>
             <div class="input-box">
                 <input id="username" type="text" placeholder="Username" required>
-                <i class='bx bx-user'></i>
             </div>
 
             <div class="input-box">
                 <input id="password" type="password" placeholder="Password" required>
-                <i class='bx bx-lock'></i>
             </div>
 
             <div class="Remember-forgot">
-                <label><input type="checkbox"> Remember Me</label>
-                <a href="#" class="forgot-password">Forgot Password?</a>
+                <label><input type="checkbox"> Remember Me </label>
+                <a href="#" class="forgot-password"> Forgot Password? </a>
             </div>
 
             <button type="submit" class="btn">Login</button>
@@ -78,21 +76,21 @@
             var email = document.getElementById("registerEmail").value;
             var password = document.getElementById("registerPassword").value;
 
-            return true; 
+            return true;
         }
-        document.querySelector(".register-link-btn").addEventListener("click", function(event) {
+        document.querySelector(".register-link-btn").addEventListener("click", function (event) {
             event.preventDefault();
             toggleForms();
         });
 
-        document.getElementById("registerForm").addEventListener("submit", function(event) {
+        document.getElementById("registerForm").addEventListener("submit", function (event) {
             if (!validateRegisterForm()) {
                 event.preventDefault();
             }
         });
 
-       
-        document.querySelector(".login-link-btn").addEventListener("click", function(event) {
+
+        document.querySelector(".login-link-btn").addEventListener("click", function (event) {
             event.preventDefault();
             document.getElementById("registerForm").style.display = "none";
             document.getElementById("loginForm").style.display = "block";
