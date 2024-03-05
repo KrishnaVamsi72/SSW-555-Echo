@@ -11,7 +11,7 @@
 
 <body>
     <div class="wrapper">
-        <!-- Login Form -->
+
         <form id="loginForm" action="#">
             <h1>Login</h1>
             <div class="input-box">
@@ -36,22 +36,22 @@
             </div>
         </form>
 
-        <!-- Register Form (Initially Hidden) -->
+  
         <form id="registerForm" action="#" style="display: none;">
             <h1>Register</h1>
             <div class="input-box">
                 <input id="registerUsername" type="text" placeholder="Username" required>
-                <!-- <i class='bx bx-user'></i> -->
+            
             </div>
 
             <div class="input-box">
                 <input id="registerEmail" type="email" placeholder="Email" required>
-                <!-- <i class='bx bx-envelope'></i> -->
+            
             </div>
 
             <div class="input-box">
                 <input id="registerPassword" type="password" placeholder="Password" required>
-                <!-- <i class='bx bx-lock'></i> -->
+                
             </div>
 
             <button type="submit" class="btn">Register</button>
@@ -70,7 +70,7 @@
             document.getElementById("registerForm").style.display = "block";
         }
 
-        // Function to validate the register form
+        
         function validateRegisterForm() {
             var username = document.getElementById("registerUsername").value;
             var email = document.getElementById("registerEmail").value;
