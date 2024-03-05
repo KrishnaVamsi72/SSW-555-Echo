@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="user_style.css">
+</head>
+<body>
+    <div class="dashboard">
+        <div class="sidebar">
+            <h2>User Dashboard</h2>
+            <p>Welcome, <span id="userName">User</span>!</p>
+            <ul>
+                <li><a href="#chats">Chat 1</a></li>
+                <li><a href="#chats">Chat 2</a></li>
+                <!-- Other chat links -->
+                <li><a href="#groups">Group 1</a></li>
+                <li><a href="#groups">Group 2</a></li>
+                <!-- Other group links -->
+                <li><a href="feedback.html">Feedback</a></li>
+                <!-- Feedback link -->
+                <li><a href="index.html">Sign Out</a></li>
+            </ul>
+
+        </div>
+        <div class="main-content">
+            <div id="chats">
+                <h2>Chats</h2>
+                <!-- Add chat content here -->
+            </div>
+            <div id="groups">
+                <h2>Groups</h2>
+                <!-- Add group content here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample User Name
+        var user = {
+            name: "Krishna Vamsi"
+        };
+
+        document.getElementById("userName").textContent = user.name;
+
+      
+        
+    </script>
+</body>
+</html>
