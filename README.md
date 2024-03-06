@@ -6,4 +6,5 @@ Text application where users can interact with each other using EEG (imagined sp
 - npm install express mongoose bcryptjs jsonwebtoken nodemailer
 - mongodb
 - html , css , javascript
+- node server.js
   
