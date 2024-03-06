@@ -1,0 +1,47 @@
+<!-- register.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Form</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="wrapper">
+        <!-- Register Form -->
+        <form id="registerForm">
+            <h1>Register</h1>
+            <div class="input-box">
+                <input id="registerUsername" type="text" placeholder="Username" name="username" required>
+                <i class='bx bx-user'></i>
+            </div>
+
+            <div class="input-box">
+                <input id="registerPassword" type="password" placeholder="Password" name="password" required>
+                <i class='bx bx-lock'></i>
+            </div>
+
+            <div class="input-box">
+                <input id="registerConfirmPassword" type="password" placeholder="Confirm Password" name="confirmPassword" required>
+                <i class='bx bx-lock'></i>
+            </div>
+
+            <button type="button" class="btn" onclick="validateRegisterForm()">Register</button>
+
+            <div class="register-link">
+                <p>
+                    Already have an account? <a href="index.html" class="login-link-btn">Login</a>
+                </p>
+            </div>
+        </form>
+
+        <script src="register.js"></script>
+    </div>
+</body>
+
+</html>
