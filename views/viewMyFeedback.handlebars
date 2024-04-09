@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Feedback</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .feedback-list {
+            margin-top: 20px;
+        }
+        .feedback-item {
+            background-color: #f9f9f9;
+            border: 1px solid #e1e1e1;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+        .feedback-item p {
+            margin: 5px 0;
+        }
+        .date {
+            font-size: 0.85em;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <h2>My Feedback</h2>
+    <div class="feedback-list">
+        {{#each feedback}}
+            <div class="feedback-item">
+                <p>{{this.content}}</p>
+               <p>Submitted on {{formatDate this.createdAt 'en-US' '{"hour":"2-digit","minute":"2-digit","second":"2-digit"}'}}</p>
+
+
+            </div>
+        {{else}}
+            <p>You have not submitted any feedback yet.</p>
+        {{/each}}
+    </div>
+
+    <a href="/protected">Back to Profile</a>
+</body>
+</html>

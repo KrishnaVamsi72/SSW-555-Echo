@@ -1,0 +1,12 @@
+<h2>All Feedback</h2>
+<div class="feedback-list">
+    {{#each feedback}}
+        <div class="feedback-item">
+            <p>{{this.content}}</p>
+            <!-- Assuming you now have userName or similar in your feedback objects -->
+            <p>Submitted by: {{this.userName}} at {{formatDate this.createdAt}}</p>
+        </div>
+    {{else}}
+        <p>No feedback to display.</p>
+    {{/each}}
+</div>

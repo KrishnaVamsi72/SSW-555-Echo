@@ -1,0 +1,29 @@
+<div class="welcome-message">
+    Welcome <span class="user-name">{{firstName}}</span>, the time is now: <span class="current-time">{{currentTime}}</span>. Your role in the system is: <span class="user-role">{{role}}</span>.
+</div>
+
+{{#if admin}}
+    <p class="admin-link"><a href="/admin">Back to the admin page</a></p>
+{{/if}}
+
+<div class="profile-actions">
+    <button onclick="window.location.href='/viewuser'" type="button">
+      Click here to view profile!
+    </button>
+    <button onclick="window.location.href='/edituser'" type="button">
+      Click here to edit profile!
+    </button>
+    <button onclick="window.location.href='/myfeedback'" type="button">
+      View My Feedback
+    </button>
+</div>
+
+<div class="feedback-form">
+    <h2>Submit Feedback</h2>
+    <form action="/feedback" method="post">
+        <textarea name="content" placeholder="Enter your feedback here" required></textarea>
+        <button type="submit">Submit Feedback</button>
+    </form>
+</div>
+
+<a class="logout-style" href="/logout">Logout</a>

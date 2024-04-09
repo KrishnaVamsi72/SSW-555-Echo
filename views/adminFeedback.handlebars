@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Feedback View</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .feedback-list {
+            margin-top: 20px;
+        }
+        .feedback-item {
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .feedback-item p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <h2>All User Feedback</h2>
+    <div class="feedback-list">
+        {{#each feedback}}
+            <div class="feedback-item">
+                <p>{{this.content}}</p>
+                <p>Submitted by: User ID {{this.userId}} on {{formatDate this.createdAt}}</p>
+            </div>
+        {{else}}
+            <p>No feedback to display.</p>
+        {{/each}}
+    </div>
+
+    <a href="/admin">Back to Admin Dashboard</a>
+</body>
+</html>
