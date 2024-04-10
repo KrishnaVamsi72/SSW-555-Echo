@@ -34,7 +34,8 @@ export const createUser = async (
     }
 
   password = validation.checkString(password, "Password");
-  if((/^(.{0,7}|[^0-9]*|[^A-Z]*|[a-zA-Z0-9]*)$/.test(password))){
+  if((/^(.{0,7}|[^0-9]*|[^A-Z]*|[a-zA-Z0-9]*)$/.test(password)))
+  {
     throw 'Your password must at least have one uppercase character, at least one number and at least one special character'
   }
   if(password.match(/\s/g)){
@@ -46,7 +47,8 @@ export const createUser = async (
     throw 'Error: Invalid role'
   }
   const hash = await bcrypt.hash(password, 16);
-  let newUser={
+  let newUser=
+  {
     firstName: firstName,
     lastName: lastName,
     emailAddress: emailAddress,
@@ -64,7 +66,8 @@ export const createUser = async (
 };
 
 export const checkUser = async (emailAddress, password) => {
-  if(!emailAddress|| !password){
+  if(!emailAddress|| !password)
+  {
     throw 'Error: emailAddress or password not supplied'
   }
   if(!( /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(emailAddress))){
@@ -75,7 +78,8 @@ export const checkUser = async (emailAddress, password) => {
   if((/^(.{0,7}|[^0-9]*|[^A-Z]*|[a-zA-Z0-9]*)$/.test(password))){
     throw 'Error: Invalid Password'
   }
-  if(password.match(/\s/g)){
+  if(password.match(/\s/g))
+  {
     throw 'Error: Invalid Password'
   }
 
