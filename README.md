@@ -34,7 +34,7 @@ node seed.js
 
 
 Running the Application
-To start the application, run:
+To initiate the application, run:
 
 
 npm start
