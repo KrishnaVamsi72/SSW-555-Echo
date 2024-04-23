@@ -1,0 +1,54 @@
+
+main, #userView, #adminView {
+
+    background-color: #fad2d2;
+  
+}
+label {
+
+    color: #333;
+}
+
+input[type="text"], input[type="password"], select {
+
+    border: 1px solid #ccc;
+
+}
+button, #userView a, #adminView a {
+    background-color: #ff7700;
+    color: white;
+
+}
+button:hover, #userView a:hover, #adminView a:hover {
+    background-color: #b34800;
+}
+#reg_errors, .reg_err, .log_err {
+    color: #d9534f;}
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+.light {
+    background-color: rgba(255, 255, 255, 0.753);
+}
+.dark {
+    background-color: rgba(0, 0, 0, 0.541);
+}
+#adminLink {
+    background-color: #28a745;
+}
+
+#adminLink:hover {
+    background-color: #218838;
+}
+#logoutLink {
+    background-color: #dc3545; 
+}
+
+#logoutLink:hover {
+    background-color: #c82333;
+}

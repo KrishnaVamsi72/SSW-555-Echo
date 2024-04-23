@@ -1,198 +1,150 @@
-//import mongo collections, bcrypt and implement the following data functions
-import {users} from '../config/mongoCollections.js';
-import {ObjectId} from 'mongodb';
-import bcrypt from 'bcrypt';
-import validation from '../helpers.js';   
-export const createUser = async (
+//import mongo collections, bcrypt and implement the following data functions } from "bcryptjs";
+import bcrypt, { hash } from 'bcrypt';
+import { users } from '../config/mongoCollections.js';
+export const registerUser = async (
   firstName,
   lastName,
-  emailAddress,
+  username,
   password,
-  role,
+  favoriteQuote,
+  themePreference,
+  role
 ) => {
-  if( !firstName|| !lastName|| !emailAddress|| !password|| !role){
-    throw 'Error: Must provide all fields'
+  if(!firstName || !lastName || !username || !password || !favoriteQuote || !themePreference || !role){
+    throw 'Data Error : All fields should exist'
   }
-  firstName = validation.checkString(firstName, "First name");
-  if(firstName.length<2 || firstName.length>25){
-    throw 'Error: Invalid first name length'
+  firstName = firstName.trim();
+  lastName = lastName.trim();
+  username =  username.trim();
+  function namecheck(name){
+    if(typeof name !== 'string'|| /\d/.test(name)){
+      throw 'Data Error : Name should be of type string with no numbers'
+    }
+    if(name.length < 2 || name.length > 25){
+      throw 'Data Error : Name  should be at least 2 characters long with a max of 25 characters'
+    }
+    return name
+    
   }
-  lastName = validation.checkString(lastName, "Last name");
-  if(lastName.length<2 || lastName.length>25){
-    throw 'Error: Invalid last name length'
+  firstName = namecheck(firstName)
+  lastName = namecheck(lastName)
+  if(typeof username !== 'string' || /\d/.test(username)){
+    throw 'Error : username should be of type string'
   }
-
-  emailAddress = emailAddress.toLowerCase();
-  if (!/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@stevens\.edu$/.test(emailAddress)) {
-    throw 'Error: Email address must end with stevens.edu';
+  if(username.length < 5 || username.length > 10){
+    throw 'Error : username should be at least 5 characters long with a max of 10 characters'
   }
-  
-  const userCollection= await users();
-  let user = await userCollection.findOne({emailAddress})
-  if(user){
-      throw 'there is already a user with that email address'
+  username = username.toLowerCase();
+  const usercoll = await users();
+  const checker = await usercoll.findOne({username : username});
+  if(checker){
+    throw 'Error : username already exists'
+  }
+  password = password.trim()
+  if(typeof password !== 'string' || password.length === 0 || password.length < 8){
+    throw 'Error : password must be a valid string and 8 characters long '
+  }
+  var spec_char = '!@#$%^&*,:;_"-.?!`\''
+  var count_upper = 0
+  var count_digit = 0
+  var count_specialchar = 0
+  for (let i of password){
+    if(i >= 'A' && i <= 'Z'){
+      count_upper += 1   
+    }
+    else if(i >= '0' && i <= '9'){
+      count_digit += 1
+    }
+    else if(spec_char.includes(i)){
+      count_specialchar += 1
     }
 
-  password = validation.checkString(password, "Password");
-  if((/^(.{0,7}|[^0-9]*|[^A-Z]*|[a-zA-Z0-9]*)$/.test(password)))
-  {
-    throw 'Your password must at least have one uppercase character, at least one number and at least one special character'
   }
-  if(password.match(/\s/g)){
-    throw 'Error: Invalid Password'
+  if(count_digit < 1 || count_specialchar < 1 || count_upper < 1){
+    throw 'Error : password should contain at least one uppercase character, there has to be at least one number and there has to be at least one special character'
   }
-  role = validation.checkString(role, "Role")
-  role = role.toLowerCase();
-  if(!(/^(admin|user)$/.test(role))){
-    throw 'Error: Invalid role'
+  favoriteQuote = favoriteQuote.trim()
+  if(typeof favoriteQuote !== 'string' || favoriteQuote.length === 0 || favoriteQuote.length < 20 || favoriteQuote.length > 255){
+    throw 'Error : quote should be a valid string (no strings with just spaces) and should be at least 20 characters long with a max of 255 characters'
   }
-  const hash = await bcrypt.hash(password, 16);
-  let newUser=
-  {
-    firstName: firstName,
-    lastName: lastName,
-    emailAddress: emailAddress,
-    password: hash,
-    role: role,
-    feedback : []
+  var validthemedPrefences = ["light", "dark"]
+  themePreference = themePreference.trim().toLowerCase();
+  if(themePreference !== validthemedPrefences[0] && themePreference !== validthemedPrefences[1]){
+    throw "Error : themePreference valid values are light or dark only"
   }
   
-  const insertInfo = await userCollection.insertOne(newUser);
-  console.log('Inserted the user into the databse successfully')
+  var roles = ["user","admin"]
+  role = role.trim().toLowerCase();
+  if(role !== roles[0] && role !== roles[1]){
+    throw "Error : role valid values are admin or user only"
+  }
+  const saltRounds = 16;
+  const hashpassword = await bcrypt.hash(password ,saltRounds);
+  const newuser = {
+    firstName : firstName,
+    lastName : lastName,
+    username : username,
+    password : hashpassword,
+    favoriteQuote : favoriteQuote,
+    themePreference : themePreference,
+    role : role
+  }
+  const insertInfo = await usercoll.insertOne(newuser);
   if (!insertInfo.acknowledged || !insertInfo.insertedId)
-    throw 'Could not add band'
-  let obj={insertedUser: true};
-  return obj;
+    throw 'Error : could not add user';
+  
+  
+  return {signupCompleted: true};
+
 };
 
-export const checkUser = async (emailAddress, password) => {
-  if(!emailAddress|| !password)
-  {
-    throw 'Error: emailAddress or password not supplied'
+export const loginUser = async (username, password) => {
+  if(!username || !password){
+    throw "Error : username and password must be supplied"
   }
-  if(!( /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(emailAddress))){
-    throw 'Error: Invalid email address'
+  username = username.trim();
+  password = password.trim();
+  if(typeof username !== 'string' || username.length === 0 || username.length < 5 || username.length > 10 || /\d/.test(username)){
+    throw "Error : should be a valid string (no strings with just spaces, should not contain numbers) and should be at least 5 characters long with a max of 10 character"
   }
-  emailAddress = emailAddress.toLowerCase();
-  password = validation.checkString(password, "Password");
-  if((/^(.{0,7}|[^0-9]*|[^A-Z]*|[a-zA-Z0-9]*)$/.test(password))){
-    throw 'Error: Invalid Password'
+  username = username.toLowerCase();
+   password = password.trim()
+  if(typeof password !== 'string' || password.length === 0 || password.length < 8){
+    throw 'Error : password must be a valid string and 8 characters long '
   }
-  if(password.match(/\s/g))
-  {
-    throw 'Error: Invalid Password'
+  var spec_char = '!@#$%^&*,:;_"-.?!`\''
+  var count_upper = 0
+  var count_digit = 0
+  var count_specialchar = 0
+  for (let i of password){
+    if(i >= 'A' && i <= 'Z'){
+      count_upper += 1   
+    }
+    else if(i >= '0' && i <= '9'){
+      count_digit += 1
+    }
+    else if(spec_char.includes(i)){
+      count_specialchar += 1
+    }
+
+  }
+  if(count_digit < 1 || count_specialchar < 1 || count_upper < 1){
+    throw 'Error : password should contain at least one uppercase character, there has to be at least one number and there has to be at least one special character'
+  }
+  username = username.toLowerCase();
+  const usercoll = await users();
+  const checker = await usercoll.findOne({username : username});
+  if(!checker){
+    throw 'Either the username or password is invalid'
+  }
+  let comparepassword = false;
+  comparepassword = await bcrypt.compare(password,checker.password)
+  if(comparepassword){
+    const {firstName , lastName , username , favoriteQuote , themePreference ,role} = checker;
+    return {firstName , lastName , username , favoriteQuote , themePreference , role}
+  }
+  if(!comparepassword){
+    throw 'Either the username or password is invalid'
   }
 
-  const userCollection = await users();
-  let userList = await userCollection.findOne({emailAddress:emailAddress});
-  let found=false;
-  let tempuser;
-  if(userList){
-    found = true;
-    tempuser = userList;
-  }
-  if(found==false){
-    throw 'Either the email address or password is invalid'
-  }
-  let compareToMatch = await bcrypt.compare(password, tempuser.password);
-  if(!compareToMatch){
-    throw 'Either the email address or password is invalid'
-  }
-  delete tempuser.password;
-  return tempuser;
 };
-
-  export const getallusers = async (
-    ) => {
-      const usersCollection = await users();
-      const usersList = await usersCollection.find({}).toArray();
-      //console.log(usersList);
-      return usersList;
-    };
-
-  export const getUserById = async (id) => {
-    if (!id) throw 'You must provide an id';
-  
-    const usersCollection = await users();
-  
-    const user = await usersCollection.findOne({ 
-      _id: new ObjectId(id) 
-    });
-  
-    if (!user) throw 'User not found';
-  
-    return user;
-  }
-
-  export const updateUser = async (
-        firstName,
-        lastName,
-        emailAddress,
-        password,
-        role,
-      ) => {
-        if( !firstName|| !lastName|| !emailAddress|| !password|| !role){
-                throw 'Error: Must provide all fields'
-              }
-              firstName = validation.checkString(firstName, "First name");
-              if(firstName.length<2 || firstName.length>25){
-                throw 'Error: Invalid first name length'
-              }
-              lastName = validation.checkString(lastName, "Last name");
-              if(lastName.length<2 || lastName.length>25){
-                throw 'Error: Invalid last name length'
-              }
-              emailAddress = emailAddress.toLowerCase();
-              if(!( /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(emailAddress))){
-                throw 'Error: Invalid email address'
-              }
-              const userCollection= await users();
-            
-              password = validation.checkString(password, "Password");
-              if((/^(.{0,7}|[^0-9]*|[^A-Z]*|[a-zA-Z0-9]*)$/.test(password))){
-                throw 'Error: Invalid Password'
-              }
-              if(password.match(/\s/g)){
-                throw 'Error: Invalid Password'
-              }
-              role = validation.checkString(role, "Role")
-              role = role.toLowerCase();
-              if(!(/^(admin|user)$/.test(role))){
-                throw 'Error: Invalid role'
-              }
-              const hash = await bcrypt.hash(password, 16);    
-  
-    const updateObj = {
-      firstName,
-      lastName, 
-      emailAddress: emailAddress.toLowerCase(),
-      password: hash,
-      role: role.toLowerCase()
-    };  
-    const result = await userCollection.updateOne(
-      {},
-      { $set: updateObj } 
-    );
-    //console.log('ID:', id); 
-    //console.log('Update Data:', updateObj);
-  
-    if (!result.matchedCount && !result.modifiedCount) 
-      throw 'Update failed';
-  
-    return updateObj;
-  }
-
-
-
-
-
-
-
-
-  
-  
-
-
-
-
-  

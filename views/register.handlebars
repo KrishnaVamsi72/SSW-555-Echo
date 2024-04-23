@@ -1,49 +1,56 @@
-<section class="register-section">
-    <h1>Register</h1>
-    <form class="register-form" action="/register" id="registration-form" method="post">
-        <div class="form-group">
-            <label for="firstNameInput">First name:</label>
-            <input name="firstNameInput" id="firstNameInput" type="text" placeholder="Your first name">
-            <div class="error" id="no-fname" hidden>Please provide first name</div>   
+{{!--
+
+registration handelbars
+
+    --}}
+    <main>
+    <form name="signup-form" id="signup-form" method="post" action="/register">
+        <div>
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" name="firstName">
         </div>
-        
-        <div class="form-group">
-            <label for="lastNameInput">Last name:</label>
-            <input name="lastNameInput" id="lastNameInput" type="text" placeholder="Your last name">
-            <div class="error" id="no-lname" hidden>Please provide last name</div>
+        <div>
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" name="lastName">
         </div>
-        
-        <div class="form-group">
-            <label for="emailAddressInput">Enter email:</label>
-            <input name="emailAddressInput" id="emailAddressInput" type="email" placeholder="Your email address">    
-            <div class="error" id="no-email" hidden>Please provide an email</div>
+        <div>
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username">
         </div>
-        
-        <div class="form-group">
-            <label for="passwordInput">Enter password:</label>
-            <input name="passwordInput" id="passwordInput" type="password" placeholder="Create a password">
-            <div class="error" id="no-pass" hidden>Please provide a password</div>
+        <div>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password">
         </div>
-        
-        <div class="form-group">
-            <label for="confirmPasswordInput">Confirm password:</label>
-            <input name="confirmPasswordInput" id="confirmPasswordInput" type="password" placeholder="Confirm your password">
-            <div class="error" id="no-pass-confirm" hidden>Please confirm password</div>
+        <div>
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" id="confirmPassword" name="confirmPassword">
         </div>
-        
-        <div class="form-group">
-            <label for="roleInput">Role:</label>
-            <select name="roleInput" id="roleInput">
-                <option value="user">User</option>
-                <option value="admin">Admin</option>
-            </select>
-            <div class="error" id="no-role" hidden>Please select a role</div>
+        <div>
+            <label for="favoriteQuote">Favorite Quote</label>
+            <input type="text" id="favoriteQuote" name="favoriteQuote">
         </div>
-        
-        <button class="submit-button" type="submit">Register</button>
+        <div>
+            <label for="themePreference">Theme Preference</label>
+        <select id="themePreference" name="themePreference">
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+        </select>
+        </div>
+        <div>
+        <label for="role">Role</label>
+        <select id="role" name="role">
+            <option value="admin">Admin</option>
+            <option value="user">User</option>
+        </select>
+        </div>
+        <button type="submit" name="submitButton" id="submitButton">Register</button>
     </form>
+    <script src="/public/js/client_side_validation.js"></script>
+    <div id="reg_errors"></div>
+    {{#if message}}
+    <p class="reg_err">{{message}}</p>
+    {{/if}}
+    <div class="regerr"></div>
+    <a href="/login">Already have an account?Click here to log-in</a>
+    </main>
     
-    <div class="login-link">
-        Already have an account? <a href="/login">Click here to log-in</a>
-    </div>
-</section>
