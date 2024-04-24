@@ -1,25 +1,17 @@
-<div class="admin-welcome-message">
-  Welcome <span class="admin-name">{{firstName}}</span>, the time is now: <span class="current-time">{{currentTime}}</span>. You have super-secret admin access since you are an admin. Remember, with great power comes great responsibility.
+{{!--
+
+If the user is logged in and they are an admin user, and 'GET /admin' endpoint is called, you will render this view
+based on the specs.
+
+
+
+--}}
+
+<div id="adminView">
+<p id="welcome">Welcome {{firstName}} {{lastName}}, the time is now: {{currentTime}}. You get super secret admin access since you are an admin. Remember, with great power comes great responsibility!!</p>
+<p id="quote">AboutMe: {{AboutMe}}</p>
+<a id="userLink" href="/user">User Page</a>
+<br>
+<a id="logoutLink" href="/logout">Logout</a>
+<a id="viewallfeedback">View All Feedback</a>
 </div>
-
-<h1>{{firstName}}'s Admin Profile</h1>
-
-<div class="admin-profile-info">
-  <p>Hello {{firstName}} {{lastName}}!! Here is your profile</p>
-  <p>FirstName: {{firstName}}</p>
-  <p>LastName: {{lastName}}</p>
-  <p>EmailAddress: {{emailAddress}}</p>
-  <p>Role: {{role}}</p>
-</div>
-{{#if admin}}
-  <div class="admin-actions">
-    <button onclick="window.location.href='/admin/feedback'" type="button">
-      View Submitted Feedback
-    </button>
-    <button onclick="window.location.href='/protected'" type="button">
-      Link to the User Page
-    </button>
-  </div>
-{{/if}}
-
-<a href="/logout" class="logout-link">Logout</a>

@@ -1,0 +1,81 @@
+/* Overall Layout Adjustments */
+main, #userView, #adminView {
+    background-color: #f5f5dc; /* Soft beige background */
+    padding: 20px; /* Adequate padding around the content */
+    font-family: 'Helvetica Neue', Arial, sans-serif; /* Modern, readable font */
+    color: #333; /* Dark gray for text, enhances readability */
+    line-height: 1.6; /* Improves text readability */
+}
+
+/* Labels for better readability and spacing */
+label {
+    display: block; /* Labels on new line */
+    margin-bottom: 8px; /* Space below each label */
+    color: #5a5a5a; /* Darker gray for better readability */
+    font-size: 16px; /* Slightly larger font for easy reading */
+}
+
+/* Input styling for aesthetics */
+input[type="text"], input[type="password"], select {
+    width: 100%; /* Full width inputs */
+    padding: 8px; /* Padding inside input for better typing experience */
+    margin-bottom: 16px; /* Spacing below each input */
+    box-sizing: border-box; /* Border box for proper width calculation */
+    border-radius: 4px; /* Slightly rounded borders */
+    font-size: 16px; /* Readable text size */
+}
+
+/* Buttons and Links Enhancement */
+button, #userView a, #adminView a {
+    display: inline-block; /* Proper block display */
+    margin: 10px 5px; /* Margin around buttons for spacing */
+    text-align: center; /* Center text inside buttons/links */
+    width: auto; /* Auto width based on content */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+/* Error Styling for Visibility */
+#reg_errors, .reg_err, .log_err {
+    padding: 10px;
+    background-color: #fbe3e4; /* Light red background for errors */
+    border-left: 5px solid #d9534f; /* Red stripe for emphasis */
+    margin-bottom: 20px; /* Spacing below the error message */
+}
+
+/* Anchor Tags */
+a {
+    color: #8a6d3b; /* Harmonious with beige theme */
+    padding: 5px 10px; /* Padding for clickable area */
+}
+
+/* Hover Effects */
+a:hover, button:hover, #userView a:hover, #adminView a:hover {
+    text-decoration: underline; /* Underline on hover for links */
+    opacity: 0.8; /* Slight transparency effect on hover */
+}
+
+/* Theme Options */
+.light, .dark {
+    padding: 10px; /* Padding for theme containers */
+    margin-bottom: 20px; /* Space below themes */
+}
+
+/* Admin Link Special Styling */
+#adminLink {
+    padding: 10px 15px; /* Consistent padding with other links */
+}
+
+/* Logout Link Specifics */
+#logoutLink {
+    background-color: #dc3545; /* Strong red for importance */
+}
+
+/* Responsive Settings */
+@media (max-width: 768px) {
+    input[type="text"], input[type="password"], select {
+        width: 100%; /* Full width on smaller screens */
+    }
+    button, #userView a, #adminView a {
+        width: 100%; /* Full width for easier touch */
+    }
+}

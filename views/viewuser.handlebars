@@ -1,16 +1,8 @@
-<article class="profile">
-    <h1>{{firstName}}'s Profile</h1>
-    <div class="greeting">
-        Hello, {{firstName}} {{lastName}}! Here is your profile:
-    </div>
-    <div class="profile-info">
-        <p>First Name: <span>{{firstName}}</span></p>
-        <p>Last Name: <span>{{lastName}}</span></p>
-        <p>Email Address: <span>{{emailAddress}}</span></p>
-        <p>Role: <span>{{role}}</span></p>
-    </div>
-    {{#if admin}}
-        <p class="admin-link"><a href="/admin">Back to the admin page</a></p>
-    {{/if}}
-    <a class="go-back" href="/login">Go Back</a>
-</article>
+<h1>Your Profile</h1>
+<p>Name: {{firstName}} {{lastName}}</p>
+<p>AboutMe: {{AboutMe}}</p>
+<p>Theme: {{themePreference}}</p>
+<p>Role: {{role}}</p>
+<p>Current Time: {{currentTime}}</p>
+<a href="/edituser">Edit Profile</a>
+<a href="/logout">Logout</a>

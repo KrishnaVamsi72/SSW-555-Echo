@@ -1,22 +1,26 @@
-<section class="login-section">
-    <h1>Login</h1>
-    <form class="login-form" action="/login" id="login-form" method="post">
-        <div class="form-group">
-            <label for="emailAddressInput">Enter email:</label>
-            <input name="emailAddressInput" id="emailAddressInput" type="email" placeholder="Enter your email">
-            <div class="error" id="no-email" hidden>Please provide an email</div>
-        </div>
-        
-        <div class="form-group">
-            <label for="passwordInput">Enter password:</label>
-            <input name="passwordInput" id="passwordInput" type="password" placeholder="Enter your password">
-            <div class="error" id="no-pass" hidden>Please provide a password</div>
-        </div>
-        
-        <button class="login-button" type="submit">Login</button>
-    </form>
-    
-    <div class="register-link">
-        <a href="/register">Click here to register!</a>
+{{!--
+
+login form handlebar template
+
+--}}
+<main>
+<form name="signin-form" id="signin-form" method="post" action="/login">
+     <div>
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username">
     </div>
-</section>
+    <div>
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password">
+    </div>
+    <button type="submit" name="submitButton" id="submitButton">Login</button>
+</form>
+  <script src="/public/js/client_side_validation.js"></script>
+
+{{#if message}}
+  <p class="log_err">{{message}}</p>
+{{/if}}
+<a href="/register">Click here to register!</a>
+<div class="logerr"></div>
+</main>
+ 

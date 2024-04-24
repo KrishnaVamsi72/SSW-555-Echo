@@ -1,0 +1,18 @@
+
+<article class="messages">
+    <h1>Messages Sent by {{firstName}} {{lastName}}</h1>
+    {{#if messages.length}}
+        <ul class="message-list">
+            {{#each messages}}
+                <li>
+                    <p>To: {{receiver.username}}</p>
+                    <p>Message: {{message}}</p>
+                    <p>Predicted EEG Data: {{prediction}}</p>
+                </li>
+            {{/each}}
+        </ul>
+    {{else}}
+        <p>You have not sent any messages.</p>
+    {{/if}}
+    <a href="/user">Back to Profile</a>
+</article>
