@@ -9,7 +9,7 @@ try{
 }
 
 try{
-    console.log(await usersData.createUser("Sanjana","Kantiredi", "sanjanak@stevens.edu", "password@12345","admin"));
+    console.log(await usersData.createUser("Sanjana","Kantreddi", "sanjanak@stevens.edu", "password@12345","admin"));
 }catch(e){
     console.log(e);
 }
