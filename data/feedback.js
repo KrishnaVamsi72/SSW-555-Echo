@@ -13,7 +13,7 @@ export const addFeedback = async (userId, name, rating, comments) => {
 
     const insertResult = await feedbackCollection.insertOne(newFeedback);
     if (insertResult.insertedCount === 0) {
-        throw 'Failed to add feedback';
+        throw 'Failed to add feedback comment';
     }
 
     return { feedbackId: insertResult.insertedId.toString(), ...newFeedback };
