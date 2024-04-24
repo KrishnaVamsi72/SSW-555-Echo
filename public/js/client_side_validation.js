@@ -11,7 +11,7 @@ $(document).ready(function() {
       let username = $('#username').val().trim();
       let password = $('#password').val().trim();
       let confirmPassword = $('#confirmPassword').val().trim();
-      let favoriteQuote = $('#favoriteQuote').val().trim();
+      let AboutMe = $('#AboutMe').val().trim();
       let themePreference = $('#themePreference').val().trim();
       let role = $('#role').val().trim();
 
@@ -31,13 +31,13 @@ $(document).ready(function() {
           if (!/[!@#$%^&*()-_=+[\]{};:'",.<>?]/.test(pwd)) return 'Password must contain at least one special character';
       }
 
-      if (!firstName || !lastName || !username || !password || !confirmPassword || !favoriteQuote || !themePreference || !role) {
+      if (!firstName || !lastName || !username || !password || !confirmPassword || !AboutMe || !themePreference || !role) {
           errorList.push('All fields must be supplied');
       } else {
           errorList.push(validateString(firstName, 'First Name', 2, 25, /^[^\d]+$/));
           errorList.push(validateString(lastName, 'Last Name', 2, 25, /^[^\d]+$/));
           errorList.push(validateString(username, 'Username', 5, 10, /^[^\d]+$/));
-          errorList.push(validateString(favoriteQuote, 'Favorite Quote', 20, 255));
+          errorList.push(validateString(AboutMe, 'AboutMe', 20, 255));
           errorList.push(validatePassword(password));
           errorList.push(validatePassword(confirmPassword));
           if (password !== confirmPassword) {

@@ -1,244 +1,107 @@
 import { Router } from 'express';
-import { users } from '../config/mongoCollections.js';
-import { registerUser, loginUser } from '../data/users.js';
 import bcrypt from 'bcrypt';
+import { users, messages } from '../config/mongoCollections.js';
+import { registerUser, loginUser, updateUser } from '../data/users.js';
+import { addFeedback, getUserFeedback } from '../data/feedback.js'; // Assuming sendMessage and getMessagesForUser are in feedback.js or another suitable file.
+import { getMessagesForUser } from '../data/messages.js';
 const router = Router();
 
-router.route('/').get(async (req, res) => {
-  return res.json({ error: 'YOU SHOULD NOT BE HERE!' });
-});
+router.route('/')
+  .get(async (req, res) => {
+    res.json({ error: 'YOU SHOULD NOT BE HERE!' });
+  });
 
-router.route('/register').get(async (req, res) => {
-  try {
-    res.status(200).render('register', { title: 'Register' });
-  } catch (e) {
-    res.status(500).json({ e : 'Internal Server Error' });
-  }
-}).post(async (req, res) => {
-  let { firstName, lastName, username, password, confirmPassword, favoriteQuote, themePreference, role } = req.body;
-
-  try {
-    if (!firstName || !lastName || !username || !password || !favoriteQuote || !themePreference || !role || !confirmPassword) {
-      throw 'Error: All fields should exist';
-    }
-
-    firstName = firstName.trim();
-    lastName = lastName.trim();
-    username = username.trim();
-
-    function namecheck(name) {
-      if (typeof name !== 'string' || /\d/.test(name) || name.length < 2 || name.length > 25) {
-        throw 'Error: Name should be a string of 2 to 25 characters (letters only)';
+router.route('/register')
+  .get(async (req, res) => {
+    res.render('register', { title: 'Register' });
+  })
+  .post(async (req, res) => {
+    const { firstName, lastName, username, password, confirmPassword, AboutMe, themePreference, role } = req.body;
+    try {
+      if (!firstName || !lastName || !username || !password || !AboutMe || !themePreference || !role || !confirmPassword) {
+        throw 'All fields must be filled.';
       }
-      return name;
-    }
-
-    firstName = namecheck(firstName);
-    lastName = namecheck(lastName);
-
-    if (typeof username !== 'string' || /\d/.test(username) || username.length < 5 || username.length > 10) {
-      throw 'Error: Username should be a string of 5 to 10 characters (letters only)';
-    }
-
-    username = username.toLowerCase();
-    const userCollection = await users();
-    const usernameExists = await userCollection.findOne({ username: username });
-    if (usernameExists) {
-      throw 'Error: Username already exists';
-    }
-
-    password = password.trim();
-    if (typeof password !== 'string' || password.length < 8 || password.length === 0) {
-      throw 'Error: Password must be a valid string of at least 8 characters';
-    }
-
-    const specChar = '!@#$%^&*,:;_"-.?!`\'';
-    let countUpper = 0;
-    let countDigit = 0;
-    let countSpecialChar = 0;
-
-    for (let i of password) {
-      if (i >= 'A' && i <= 'Z') {
-        countUpper++;
-      } else if (i >= '0' && i <= '9') {
-        countDigit++;
-      } else if (specChar.includes(i)) {
-        countSpecialChar++;
+      const userRegistered = await registerUser(firstName, lastName, username, password, AboutMe, themePreference, role);
+      if (userRegistered.signupCompleted) {
+        res.render('login', { message: 'Successfully Registered. You can now login.', title: 'Login' });
+      } else {
+        throw 'Registration failed.';
       }
+    } catch (e) {
+      res.status(400).render('register', { message: e, title: 'Register' });
     }
+  });
 
-    if (countUpper < 1 || countDigit < 1 || countSpecialChar < 1) {
-      throw 'Error: Password must contain at least one uppercase letter, one digit, and one special character';
-    }
-
-    if (confirmPassword !== password) {
-      throw 'Error: Passwords do not match';
-    }
-
-    favoriteQuote = favoriteQuote.trim();
-    if (typeof favoriteQuote !== 'string' || favoriteQuote.length < 20 || favoriteQuote.length > 255 || favoriteQuote.length === 0) {
-      throw 'Error: Quote must be a string of 20 to 255 characters';
-    }
-
-    const validThemePreferences = ['light', 'dark'];
-    themePreference = themePreference.trim().toLowerCase();
-    if (!validThemePreferences.includes(themePreference)) {
-      throw 'Error: Invalid theme preference. Choose either "light" or "dark"';
-    }
-
-    const validRoles = ['user', 'admin'];
-    role = role.trim().toLowerCase();
-    if (!validRoles.includes(role)) {
-      throw 'Error: Invalid role. Choose either "user" or "admin"';
-    }
-  }catch(e){
-    res.status(400).render('register',{message : e , title : 'Register'})
-  }
-try{
-    const insertUser = await registerUser(firstName, lastName, username, password, favoriteQuote, themePreference, role);
-
-    if (insertUser.signupCompleted) {
-      res.status(200).render('login', { message: 'Successfully Registered. You can login now.', title: 'Login' });
-    } else {
-      res.status(500).json('Internal Server Error');
-    }
-  } catch (e) {
-    res.status(400).render('register', { message: e, title: 'Register' });
-  }
-});
-
-router.route('/login').get(async (req, res) => {
-  try {
-    res.status(200).render('login', { title: 'Login' });
-  } catch (e) {
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-}).post(async (req, res) => {
-  let { username, password } = req.body;
-
-  try {
-    if (!username || !password) {
-      throw 'Error: Username and password are required';
-    }
-    username = username.trim().toLowerCase();
-    if (typeof username !== 'string' || username.length < 5 || username.length > 10 || /\d/.test(username)) {
-      throw 'Error: Invalid username format';
-    }
-
-    password = password.trim();
-    if (typeof password !== 'string' || password.length < 8 || password.length === 0) {
-      throw 'Error: Password must be a valid string of at least 8 characters';
-    }
-
-    const specChar = '!@#$%^&*,:;_"-.?!`\'';
-    let countUpper = 0;
-    let countDigit = 0;
-    let countSpecialChar = 0;
-
-    for (let char of password) {
-      if (char >= 'A' && char <= 'Z') {
-        countUpper++;
-      } else if (char >= '0' && char <= '9') {
-        countDigit++;
-      } else if (specChar.includes(char)) {
-        countSpecialChar++;
+router.route('/login')
+  .get(async (req, res) => {
+    res.render('login', { title: 'Login' });
+  })
+  .post(async (req, res) => {
+    const { username, password } = req.body;
+    try {
+      const user = await loginUser(username, password);
+      req.session.user = { ...user };
+      if (user.role === 'admin') {
+        res.redirect('/admin');
+      } else {
+        res.redirect('/user');
       }
+    } catch (e) {
+      res.status(400).render('login', { message: e, title: 'Login' });
     }
+  });
 
-    if (countUpper < 1 || countDigit < 1 || countSpecialChar < 1) {
-      throw 'Error: Password must contain at least one uppercase letter, one digit, and one special character';
+router.route('/user')
+  .get(async (req, res) => {
+    if (!req.session.user) return res.redirect("/login");
+    res.render('user', { ...req.session.user, title: 'User Profile' });
+  });
+
+router.route('/admin')
+  .get(async (req, res) => {
+    if (!req.session.user || req.session.user.role !== 'admin') return res.redirect("/login");
+    res.render('admin', { ...req.session.user, title: 'Admin Dashboard' });
+  });
+
+router.route('/logout')
+  .get(async (req, res) => {
+    req.session.destroy();
+    res.render('logout', { title: 'Logged Out' });
+  });
+
+router.get("/myfeedback", async (req, res) => {
+    if (!req.session.user) return res.redirect("/login");
+    const feedback = await getUserFeedback(req.session.user._id);
+    res.render("viewMyFeedback", { feedback, title: 'Your Feedback' });
+  });
+
+router.get("/sendfeedback", async (req, res) => {
+    if (!req.session.user) return res.redirect("/login");
+    res.render('feedback', { title: 'Send Feedback' });
+  });
+
+router.post("/sendfeedback", async (req, res) => {
+    const { name, rating, comments } = req.body;
+    try {
+      const feedbackSent = await addFeedback(req.session.user._id, name, parseInt(rating), comments);
+      res.render('addedfeedback', { success: "Feedback successfully added!", title: 'Feedback Sent' });
+    } catch (e) {
+      res.status(500).render('feedback', { error: `Error submitting feedback: ${e}`, title: 'Send Feedback' });
     }
-
-    const user = await loginUser(username,password);
-    if(user){
-    req.session.user = {
-      firstName: user.firstName,
-      lastName: user.lastName,
-      username: user.username,
-      favoriteQuote: user.favoriteQuote,
-      themePreference: user.themePreference,
-      role: user.role
-    };}
-    else{
-      throw 'Either username or password'
-
-    }
-    if (user.role === 'admin') {
-      res.redirect('/admin');
-    } else {
-      res.redirect('/user');
-    }
-  } catch (e) {
-    res.status(400).render('login', { message: e, title: 'Login' });
-  }
-  try{
-
-  }catch(e){
-
-  }
+  });
+  router.get('/sendmessage', async (req, res) => {
+    if (!req.session.user) return res.redirect('/login');  // Ensure the user is logged in
+    res.render('sendmessage', { title: 'Send Message' }); // Render the message sending page
 });
+router.get('/viewmessage', async (req, res) => {
+  if (!req.session.user) return res.redirect('/login');  // Ensure the user is logged in
 
-router.route('/user').get(async (req, res) => {
   try {
-    const { firstName, lastName, username, favoriteQuote, role ,themePreference} = req.session.user;
-    const now = new Date(); 
-    const hours = now.getHours();
-    const minutes = now.getMinutes();
-
-    var ampm = ''
-    if(hours >= 12){
-      ampm ='PM'
-    }
-    else{
-      ampm = 'AM'
-    }
-    res.status(200).render('user', {
-      firstName,
-      lastName,
-      username,
-      favoriteQuote,
-      role,
-      currentTime : `${hours}:${minutes}:${ampm}`,
-      title: 'User',
-      admin : req.session.user.role === 'admin',
-      themePreference
-    });
-    
+      const messagesReceived = await getMessagesForUser(req.session.user._id); // Fetch messages for the logged-in user
+      res.render('viewmessage', { messages: messagesReceived, title: 'Your Messages' }); // Render the page to view messages
   } catch (e) {
-    res.status(500).json({ error: 'Internal Server Error' });
+      res.status(500).render('error', { error: e.message, title: 'View Messages' });
   }
-});
-router.route('/admin').get(async (req, res) => {
-  try {
-    const { firstName, lastName, username, favoriteQuote, role ,themePreference} = req.session.user;
-
-    const now = new Date(); 
-    const hours = now.getHours();
-    const minutes = now.getMinutes();
-    var ampm = ''
-    if(hours >= 12){
-      ampm ='PM'
-    }
-    else{
-      ampm = 'AM'
-    }
-    res.status(200).render('admin', {
-      firstName,
-      lastName,
-      username,
-      favoriteQuote,
-      role,
-      themePreference,
-      currentTime : `${hours}:${minutes}:${ampm}`,
-      title: 'Admin'
-    });
-  } catch (e) {
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
-router.route('/logout').get(async (req, res) => {
-  req.session.destroy();
-  res.status(200).render('logout');
 });
 
 export default router;
