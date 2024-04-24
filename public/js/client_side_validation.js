@@ -24,10 +24,10 @@ $(document).ready(function() {
       }
 
       function validatePassword(pwd) {
-          if (pwd.length < 8) return 'Password should be a minimum of 8 characters long';
-          if (/\s/.test(pwd)) return 'Password cannot contain spaces';
-          if (!/[A-Z]/.test(pwd)) return 'Password must contain at least one uppercase letter';
-          if (!/\d/.test(pwd)) return 'Password must contain at least one number';
+          if (pwd.length < 8) return 'Password should be minimum of 8 characters long';
+          if (/\s/.test(pwd)) return 'Password cannot have spaces';
+          if (!/[A-Z]/.test(pwd)) return 'Password must contain at least one Uppercase';
+          if (!/\d/.test(pwd)) return 'Password must contain at least a number';
           if (!/[!@#$%^&*()-_=+[\]{};:'",.<>?]/.test(pwd)) return 'Password must contain at least one special character';
       }
 
@@ -68,7 +68,7 @@ $(document).ready(function() {
 
       function validateField() {
           if (!username || !password) {
-              return 'Both username and password must be supplied';
+              return 'Both username and password must be given';
           }
           return null;
       }
