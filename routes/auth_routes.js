@@ -69,11 +69,62 @@ router.route('/logout')
     res.render('logout', { title: 'Logged Out' });
   });
 
-router.get("/myfeedback", async (req, res) => {
+router.get("/viewfeedback", async (req, res) => {
     if (!req.session.user) return res.redirect("/login");
     const feedback = await getUserFeedback(req.session.user._id);
     res.render("viewMyFeedback", { feedback, title: 'Your Feedback' });
   });
+  router.get("/edituser", async (req, res) => {
+    if (!req.session.user) return res.redirect("/login");
+    res.render("edituser", {firstName : req.session.user.firstName});
+  });
+  router.post("/edituser", async (req, res) => {
+    if (!req.session.user) return res.redirect("/login"); // Ensure the user is logged in
+
+    const { newfirstNameInput, newlastNameInput, newpasswordInput, newconfirmPasswordInput, AboutMe } = req.body;
+
+    try {
+        // Input validation
+        if (!newfirstNameInput || !newlastNameInput || !newpasswordInput || newpasswordInput !== newconfirmPasswordInput) {
+            throw 'Validation failed: Please ensure all fields are filled correctly and passwords match.';
+        }
+
+        // Update user information, consider hashing the password if it's a new one
+        const updatedUser = await updateUser(req.session.user._id, {
+            firstName: newfirstNameInput,
+            lastName: newlastNameInput,
+            password: newpasswordInput, // Make sure to hash the password if it's changed
+            AboutMe: AboutMe
+        });
+        if(updateUser.success){
+            // Reflect updated user details in the session
+        req.session.user = {
+          ...req.session.user,
+          firstName: newfirstNameInput,
+          lastName: newlastNameInput,
+          AboutMe: AboutMe
+      };
+
+      // Notify the user of successful update
+      res.render("edituser", {
+          firstName: newfirstNameInput,
+          success: "Profile updated successfully!"
+      });
+
+        }else{
+          res.status(500).json({e : 'Internal Server Error'})
+        }
+
+      
+    } catch (e) {
+        // Handle errors and show them on the edit form
+        res.render("edituser", {
+            firstName: req.session.user.firstName,
+            error: e.message
+        });
+    }
+});
+
 
 router.get("/sendfeedback", async (req, res) => {
     if (!req.session.user) return res.redirect("/login");
@@ -93,6 +144,26 @@ router.post("/sendfeedback", async (req, res) => {
     if (!req.session.user) return res.redirect('/login');  // Ensure the user is logged in
     res.render('sendmessage', { title: 'Send Message' }); // Render the message sending page
 });
+import { findUserByUsername } from '../data/users.js';
+router.post('/sendmessage', async (req, res) => {
+  const { receiverUsername, messageContent, eegData } = req.body;
+  try {
+      // Assume you have a way to find user IDs from usernames
+      const senderId = req.session.user._id;
+      const recipient = await findUserByUsername(receiverUsername);  // This function needs to be implemented
+      const recipientId = recipient._id;
+
+      const message = await sendMessage(senderId, recipientId, messageContent, eegData);
+
+      res.status(200).json({
+          message: 'Message sent successfully',
+          data: message
+      });
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
+});
+
 router.get('/viewmessage', async (req, res) => {
   if (!req.session.user) return res.redirect('/login');  // Ensure the user is logged in
 

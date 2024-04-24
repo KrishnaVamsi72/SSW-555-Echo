@@ -47,9 +47,13 @@ import express from 'express';
 import session from 'express-session';
 import exphbs from 'express-handlebars';
 import configRoutes from './routes/index.js';
+import bodyParser from 'body-parser';
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+
+app.use(bodyParser.json({ limit: '500mb' }));
+app.use(bodyParser.urlencoded({ limit: '500mb', extended: true, parameterLimit: 50000 }));
 app.engine('handlebars', exphbs.engine({ defaultLayout: 'main' }));
 const hbs = exphbs.create({
     defaultLayout: 'main',

@@ -26,6 +26,18 @@ export const registerUser = async (firstName, lastName, username, password, Abou
 
     return { signupCompleted: true };
 };
+export const findUserByUsername = async (username) => {
+    if (!username) throw 'Username must be provided';
+
+    const userCollection = await users();
+    const user = await userCollection.findOne({ username: username.toLowerCase() });
+
+    if (!user) {
+        return null;  // Return null to indicate no user found
+    }
+
+    return user;
+};
 
 export const loginUser = async (username, password) => {
     const userCollection = await users();
@@ -43,20 +55,29 @@ export const loginUser = async (username, password) => {
     return user;
 };
 
+
 export const updateUser = async (userId, updateFields) => {
-    const { firstName, lastName, AboutMe, themePreference } = updateFields;
+    const { firstName, lastName, password, AboutMe } = updateFields;
     const userCollection = await users();
-
-    const updateResult = await userCollection.updateOne(
-        { _id: userId },
-        { $set: { firstName, lastName, AboutMe, themePreference } }
-    );
-
-    if (!updateResult.matchedCount) {
-        throw 'User not found';
+    
+    const updates = {};
+    if (firstName) updates.firstName = firstName;
+    if (lastName) updates.lastName = lastName;
+    if (AboutMe) updates.AboutMe = AboutMe;
+    if (password) {
+        const saltRounds = 10;
+        updates.password = await bcrypt.hash(password, saltRounds);
     }
-    if (!updateResult.modifiedCount) {
-        throw 'No updates made';
+
+    const updateDoc = {
+        $set: updates
+    };
+
+    const query = { _id: ObjectId(userId) };
+    const updateResult = await userCollection.updateOne(query, updateDoc);
+
+    if (!updateResult.matchedCount && !updateResult.modifiedCount) {
+        throw new Error('No updates made. User not found.');
     }
 
     return { success: true };

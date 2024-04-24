@@ -1,24 +1,22 @@
 import { messages } from '../config/mongoCollections.js';
 
-export const sendMessage = async (senderId, recipientId, message, prediction) => {
-    const messageCollection = await messages();
+export const sendMessage = async (senderId, recipientId, messageContent, prediction) => {
+    try {
+        const newMessage = new Message({
+            senderId,
+            recipientId,
+            message: messageContent,
+            prediction,
+            sentAt: new Date()
+        });
 
-    const newMessage = {
-        senderId,
-        recipientId,
-        message,
-        prediction,
-        sentAt: new Date()
-    };
-
-    const insertResult = await messageCollection.insertOne(newMessage);
-    if (insertResult.insertedCount === 0) {
-        throw 'Failed to send message';
+        const savedMessage = await newMessage.save();
+        return savedMessage;
+    } catch (error) {
+        // It's generally a good idea to throw the error further up to the caller
+        throw new Error(`Error saving message: ${error.message}`);
     }
-
-    return { messageId: insertResult.insertedId.toString(), ...newMessage };
 };
-
 export const getMessagesForUser = async (recipientId) => {
     const messageCollection = await messages();
     const messages = await messageCollection.find({ recipientId }).toArray();
