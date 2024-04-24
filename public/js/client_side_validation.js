@@ -18,7 +18,7 @@ $(document).ready(function() {
       let errorList = [];
 
       function validateString(param, name, minLen, maxLen, regex) {
-          if (param.length === 0) return `${name} cannot be empty or just spaces`;
+          if (param.length === 0) return `${name} cannot be empty or with just spaces`;
           if (param.length < minLen || param.length > maxLen) return `${name} must be between ${minLen} and ${maxLen} characters long`;
           if (regex && !regex.test(param)) return `${name} is invalid`;
       }
