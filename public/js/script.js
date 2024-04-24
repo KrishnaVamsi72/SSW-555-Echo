@@ -60,7 +60,7 @@ if(registrationForm){
             regLnameError.hidden = true;
             regRoleError.hidden = true;
 
-            registrationForm.submit();
+            registration.submit();
         }else if(!firstNameInput){
             loginEmailError.hidden = true;
             loginPasswordError.hidden = true;
