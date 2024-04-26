@@ -26,13 +26,6 @@ Copy code
 npm install
 
 
-**Configuration**
-Environment Variables: Check the config directory and ensure you have the necessary configuration files. If config.zip contains additional configurations, extract them into the config directory.
-Database Setup: If the application uses a database, refer to the data directory for initial data and use seed.js to seed your database:
-
-node seed.js
-
-
 Running the Application
 To initiate the application, run:
 
