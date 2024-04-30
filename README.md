@@ -1,33 +1,42 @@
-agile-team16-echo
-Welcome to our web application! This guide will walk you through the steps needed to get the application up and running on your local machine for development and testing purposes.
+---
 
-Prerequisites
-Before you begin, ensure you have the following installed on your system:
+Welcome to our web application, Agile Team 16 Echo! Below are the steps to get the application running on your local machine:
 
-Node.js (Latest LTS version recommended)
-npm (Node Package Manager, comes with Node.js)
-A text editor or IDE of your choice for code editing (e.g., VSCode, Sublime Text)
-Git (optional, for version control)
+**Prerequisites:**
+Before you start, make sure you have the following installed:
 
- If you've received this application as a zip file, skip this step. Otherwise, clone the repository to your local machine using Git:
+- Node.js (We recommend the latest LTS version)
+- npm (Node Package Manager, which comes with Node.js)
+- A text editor or IDE for code editing (e.g., VSCode, Sublime Text)
+- Git (optional, for version control)
 
+If you have received this application as a zip file, skip to the next step. Otherwise, clone the repository to your local machine using Git:
+
+```bash
 git clone https://github.com/KrishnaVamsi72/SSW-555-Echo.git
+```
 
-If you've extracted the zip file, navigate to the extracted folder (new test) in your terminal or command prompt.
-Install Dependencies: Run the following command in the root directory of the project to install the required npm packages:
-Copy code
+If you've extracted the zip file, navigate to the extracted folder in your terminal or command prompt.
 
+**Install Dependencies:**
+In the root directory of the project, run the following command to install the required npm packages:
+
+```bash
 npm install
+```
 
+**Running the Application:**
+To start the application, run:
 
-Running the Application
-To initiate the application, run:
+```bash
 npm start
+```
 
-This command will start the server. By default, the application should be accessible at http://localhost:3000 unless configured differently in the application settings.
+This command will start the server. By default, you can access the application at http://localhost:3000. If you have configured a different port, use that instead.
 
-Additional Information
-Public Assets: Static files such as CSS, JavaScript, and images are located in the public directory.
-Application Routes: Application routing is handled in the routes directory. Review these files to understand the application's URL structure.
-Views: Dynamic HTML templates are located in the views directory.
+**Additional Information:**
+- Public Assets: Static files such as CSS, JavaScript, and images are located in the public directory.
+- Application Routes: The application's URL structure is handled in the routes directory. Review these files to understand the routes.
+- Views: Dynamic HTML templates are located in the views directory.
 
+---
