@@ -1,42 +1,25 @@
----
+# Agile Team 16 Echo
 
-Welcome to our web application, Agile Team 16 Echo! Below are the steps to get the application running on your local machine:
+Welcome to Agile Team 16 Echo, our web application designed for EEG speech recognition
 
-**Prerequisites:**
-Before you start, make sure you have the following installed:
+## Getting Started
 
-- Node.js (We recommend the latest LTS version)
-- npm (Node Package Manager, which comes with Node.js)
-- A text editor or IDE for code editing (e.g., VSCode, Sublime Text)
-- Git (optional, for version control)
+These instructions will guide you through setting up the application on your local machine for development and testing purposes.
 
-If you have received this application as a zip file, skip to the next step. Otherwise, clone the repository to your local machine using Git:
+### Prerequisites
+
+Before you begin, ensure you have the following installed on your system:
+
+- [Node.js](https://nodejs.org/) (Latest LTS version recommended)
+- [npm](https://www.npmjs.com/) (Node Package Manager, comes with Node.js)
+- A text editor or IDE of your choice for code editing (e.g., VSCode, Sublime Text)
+- [Git](https://git-scm.com/) (optional, for version control)
+
+If you've received this application as a zip file, skip to the next step. Otherwise, clone the repository to your local machine using Git:
 
 ```bash
 git clone https://github.com/KrishnaVamsi72/SSW-555-Echo.git
-```
 
-If you've extracted the zip file, navigate to the extracted folder in your terminal or command prompt.
+npm install (install required libraries)
 
-**Install Dependencies:**
-In the root directory of the project, run the following command to install the required npm packages:
-
-```bash
-npm install
-```
-
-**Running the Application:**
-To start the application, run:
-
-```bash
-npm start
-```
-
-This command will start the server. By default, you can access the application at http://localhost:3000. If you have configured a different port, use that instead.
-
-**Additional Information:**
-- Public Assets: Static files such as CSS, JavaScript, and images are located in the public directory.
-- Application Routes: The application's URL structure is handled in the routes directory. Review these files to understand the routes.
-- Views: Dynamic HTML templates are located in the views directory.
-
----
+npm start  (to run the application)
