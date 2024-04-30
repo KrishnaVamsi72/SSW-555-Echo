@@ -144,6 +144,7 @@ router.post("/sendfeedback", async (req, res) => {
     if (!req.session.user) return res.redirect('/login');  // Ensure the user is logged in
     res.render('sendmessage', { title: 'Send Message' }); // Render the message sending page
 });
+import { sendMessage } from '../data/messages.js';
 import { findUserByUsername } from '../data/users.js';
 router.post('/sendmessage', async (req, res) => {
   const { receiverUsername, messageContent, eegData } = req.body;
