@@ -1,0 +1,56 @@
+{{!--
+
+registration handelbars
+
+    --}}
+    <main>
+    <form name="signup-form" id="signup-form" method="post" action="/register">
+        <div>
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" name="firstName">
+        </div>
+        <div>
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" name="lastName">
+        </div>
+        <div>
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username">
+        </div>
+        <div>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password">
+        </div>
+        <div>
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" id="confirmPassword" name="confirmPassword">
+        </div>
+        <div>
+            <label for="AboutMe">AboutMe</label>
+            <input type="text" id="AboutMe" name="AboutMe">
+        </div>
+        <div>
+            <label for="themePreference">Theme Preference</label>
+        <select id="themePreference" name="themePreference">
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+        </select>
+        </div>
+        <div>
+        <label for="role">Role</label>
+        <select id="role" name="role">
+            <option value="admin">Admin</option>
+            <option value="user">User</option>
+        </select>
+        </div>
+        <button type="submit" name="submitButton" id="submitButton">Register</button>
+    </form>
+    <script src="/public/js/client_side_validation.js"></script>
+    <div id="reg_errors"></div>
+    {{#if message}}
+    <p class="reg_err">{{message}}</p>
+    {{/if}}
+    <div class="regerr"></div>
+    <a href="/login">Already have an account?Click here to log-in</a>
+    </main>
+    

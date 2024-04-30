@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Feedback</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f4f4f4; /* Light gray background for better readability */
+        }
+        .feedback-list {
+            margin-top: 20px;
+        }
+        .feedback-item {
+            background-color: #ffffff; /* White background for feedback items */
+            border: 1px solid #ccc; /* Soft gray border */
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 4px; /* Rounded corners */
+        }
+        .feedback-item p {
+            margin: 5px 0; /* Consistent spacing for paragraph elements */
+        }
+        .date, .rating {
+            font-size: 0.85em; /* Smaller font size for metadata */
+            color: #777; /* Light gray text color for metadata */
+        }
+    </style>
+</head>
+<body>
+    <h2>My Feedback</h2>
+    <div class="feedback-list">
+        {{#each feedback}}
+            <div class="feedback-item">
+                <p><strong>Name:</strong> {{this.name}}</p>
+                <p><strong>Rating:</strong> {{this.rating}}/5</p>
+                <p><strong>Comments:</strong> {{this.comments}}</p>
+                <p class="date">Submitted on {{this.createdAt}}</p>
+            </div>
+        {{else}}
+            <p>You have not submitted any feedback yet.</p>
+        {{/each}}
+    </div>
+    <a href="/user">Back to Profile</a>
+</body>
+</html>
