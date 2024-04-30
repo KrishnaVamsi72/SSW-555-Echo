@@ -1,29 +1,46 @@
 import { messages } from '../config/mongoCollections.js';
 
-export const sendMessage = async (senderId, recipientId, messageContent, prediction) => {
+export const sendMessage = async (senderId, recipientId, messageContent) => {
     try {
-        const newMessage = new Message({
+        // Your existing code to create a new message object
+        const newMessage = {
             senderId,
             recipientId,
             message: messageContent,
-            prediction,
             sentAt: new Date()
+        };
+        const predictionResponse = await fetch('http://127.0.0.1:5000/predict', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ eeg_data: messageContent })
         });
 
-        const savedMessage = await newMessage.save();
-        return savedMessage;
+        if (!predictionResponse.ok) {
+            throw new Error('Failed to get prediction from server');
+        }
+
+        const predictionData = await predictionResponse.json();
+        newMessage.prediction = predictionData.prediction;
+        const messageCollection = await messages();
+        const insertResult = await messageCollection.insertOne(newMessage);
+        if (insertResult.insertedCount === 0) {
+            throw 'Failed to add message';
+        }
+
+        return { messageId: insertResult.insertedId.toString(), ...newMessage };
     } catch (error) {
-        // It's generally a good idea to throw the error further up to the caller
         throw new Error(`Error saving message: ${error.message}`);
     }
 };
+
 export const getMessagesForUser = async (recipientId) => {
-    const messageCollection = await messages();
-    const messages = await messageCollection.find({ recipientId }).toArray();
-
-    if (!messages.length) {
-        throw 'No messages found';
+    try {
+        const messageCollection = await messages();
+        const userMessages = await messageCollection.find({ recipientId }).toArray();
+        return userMessages;
+    } catch (error) {
+        throw new Error(`Error fetching messages for user: ${error.message}`);
     }
-
-    return messages;
 };
