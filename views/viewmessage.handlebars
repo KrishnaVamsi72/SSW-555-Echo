@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Feedback</title>
+    <title>My Messages</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -30,17 +30,16 @@
     </style>
 </head>
 <body>
-    <h2>My Feedback</h2>
+    <h2>My Messages</h2>
     <div class="feedback-list">
-        {{#each feedback}}
+        {{#each message}}
             <div class="feedback-item">
-                <p><strong>Name:</strong> {{this.name}}</p>
-                <p><strong>Rating:</strong> {{this.rating}}/5</p>
-                <p><strong>Comments:</strong> {{this.comments}}</p>
-                <p class="date">Submitted on {{this.createdAt}}</p>
+                <p><strong>Message:</strong> {{this.message}}</p>
+                <p><strong>SentAt:</strong> {{this.sentAt}}/5</p>
+
             </div>
         {{else}}
-            <p>You have not submitted any feedback yet.</p>
+            <p>You have not recieved any messages yet.</p>
         {{/each}}
     </div>
     <a href="/user">Back to Profile</a>
