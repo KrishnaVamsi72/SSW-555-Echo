@@ -1,10 +1,20 @@
 /* Overall Layout Adjustments */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
 main, #userView, #adminView {
     background-color: #f5f5dc; /* Soft beige background */
     padding: 20px; /* Adequate padding around the content */
     font-family: 'Helvetica Neue', Arial, sans-serif; /* Modern, readable font */
     color: #333; /* Dark gray for text, enhances readability */
     line-height: 1.6; /* Improves text readability */
+    max-width: 600px; /* Limit content width for readability */
+    border-radius: 8px; /* Rounded corners for aesthetics */
 }
 
 /* Labels for better readability and spacing */
@@ -32,6 +42,12 @@ button, #userView a, #adminView a {
     text-align: center; /* Center text inside buttons/links */
     width: auto; /* Auto width based on content */
     transition: background-color 0.3s; /* Smooth transition for hover effect */
+    padding: 8px 16px; /* Padding for buttons */
+    border-radius: 4px; /* Rounded corners for buttons */
+    background-color: #007bff; /* Blue background color for buttons */
+    color: #fff; /* White text color for buttons */
+    border: none; /* No border for buttons */
+    cursor: pointer; /* Pointer cursor for buttons */
 }
 
 /* Error Styling for Visibility */
