@@ -33,7 +33,7 @@ export const findUserByUsername = async (username) => {
     const user = await userCollection.findOne({ username: username.toLowerCase() });
 
     if (!user) {
-        return null;  // Return null to indicate no user found
+        return null; 
     }
 
     return user;

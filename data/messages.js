@@ -1,20 +1,25 @@
 import { messages } from '../config/mongoCollections.js';
+import { promises as fsPromises } from 'fs'; // Importing the 'readFile' function from the 'fs' module
 
-export const sendMessage = async (senderId, recipientId, messageContent) => {
+const { readFile } = fsPromises;
+
+export const sendMessage = async (senderId, recipientId, eegDataFile) => {
     try {
         // Your existing code to create a new message object
         const newMessage = {
             senderId,
             recipientId,
-            message: messageContent,
+            eegData: eegDataFile.eeg_data, // Extract EEG data from eegDataFile
             sentAt: new Date()
         };
+
+        // Send EEG data to prediction server
         const predictionResponse = await fetch('http://127.0.0.1:5000/predict', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ eeg_data: messageContent })
+            body: JSON.stringify({ eeg_data_file_path : eegDataFile }) // Send eegData as a JSON string
         });
 
         if (!predictionResponse.ok) {
@@ -23,10 +28,11 @@ export const sendMessage = async (senderId, recipientId, messageContent) => {
 
         const predictionData = await predictionResponse.json();
         newMessage.prediction = predictionData.prediction;
-        const messageCollection = await messages();
-        const insertResult = await messageCollection.insertOne(newMessage);
+
+        // Assuming you have a function to insert the new message into your database
+        const insertResult = await insertMessage(newMessage);
         if (insertResult.insertedCount === 0) {
-            throw 'Failed to add message';
+            throw new Error('Failed to add message');
         }
 
         return { messageId: insertResult.insertedId.toString(), ...newMessage };
@@ -34,6 +40,10 @@ export const sendMessage = async (senderId, recipientId, messageContent) => {
         throw new Error(`Error saving message: ${error.message}`);
     }
 };
+
+
+
+
 
 export const getMessagesForUser = async (recipientId) => {
     try {

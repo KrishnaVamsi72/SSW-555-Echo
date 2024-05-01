@@ -146,24 +146,48 @@ router.post("/sendfeedback", async (req, res) => {
 });
 import { sendMessage } from '../data/messages.js';
 import { findUserByUsername } from '../data/users.js';
-router.post('/sendmessage', async (req, res) => {
-  const { receiverUsername, messageContent, eegData } = req.body;
-  try {
-      // Assume you have a way to find user IDs from usernames
-      const senderId = req.session.user._id;
-      const recipient = await findUserByUsername(receiverUsername);  // This function needs to be implemented
-      const recipientId = recipient._id;
+import fs from 'fs';
 
-      const message = await sendMessage(senderId, recipientId, messageContent, eegData);
 
-      res.status(200).json({
-          message: 'Message sent successfully',
-          data: message
-      });
-  } catch (error) {
-      res.status(500).json({ error: error.message });
+import multer from 'multer';
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/'); // Specify the directory where uploaded files should be stored
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname); // Use the original filename for storing the file
   }
 });
+const upload = multer({ storage: storage });
+router.post('/sendmessage', upload.single('eegDataFile'), async (req, res) => {
+  try {
+    const { receiverUsername } = req.body;
+
+    // Assuming req.session.user contains the sender's ID
+    const senderId = req.session.user._id;
+    
+    // Find the recipient by username
+    const recipient = await findUserByUsername(receiverUsername);
+    const recipientId = recipient._id;
+
+    // Assuming req.file.path contains the path to the uploaded file
+    const eegDataFilePath = req.file.path;
+
+    // Read the content of the file
+    const eegData = fs.readFileSync(eegDataFilePath, 'utf8');
+
+    // Call sendMessage function with senderId, recipientId, and file content
+    const message = await sendMessage(senderId, recipientId, eegData);
+
+    // Respond with a success message and render the 'sendmessage' template
+    res.status(200).render('sendmessage', { message });
+  } catch (error) {
+    // If an error occurs, respond with a 500 status and the error message
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
 
 router.get('/viewmessage', async (req, res) => {
   if (!req.session.user) return res.redirect('/login');  // Ensure the user is logged in
